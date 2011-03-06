@@ -1,0 +1,194 @@
+QSearch 0.1.3 README
+
+About QSearch
+=============
+
+QSearch is a proof-of-concept application using key-value data stores to quickly search
+and look up resources uniquely identifiable within a context.
+
+QSearch uses a persistent key-value store -- a giant hash -- to provide high performance 
+lookups of uniquely identifiable items as a drop-in component for a web site search.
+
+Downloading QSearch
+===================
+
+Download or fork on https://github.com/FCC/QSearch
+
+QSearch Requirements
+====================
+
+Python  - a programming language - http://www.python.org/
+Redis   - a memory resident key-value data store - http://redis.io/
+webpy   - a python web server library with some templating - http://webpy.org/
+JQuery  - an awesome and popular Javascript library - http://jquery.org/
+
+Knowledge of command line, Python, and server administration.
+
+Software Licenses
+=================
+
+Redis is available under the New BSD License - http://www.opensource.org/licenses/bsd-license.php
+webpy is in the public domain.
+QSearch code is in the public domain, initially authored by Greg Elin for the FCC.
+
+
+QSearch Support
+===============
+
+Support is not currently available for QSearch. If you are particularly interested in the 
+project, I bet you can figure out how to reach the author.
+
+
+The Idea Behind QSearch
+=======================
+
+Many items within an organization have a unique identifier or name. For examples, call signs
+uniquely identify broadcast television and radio stations.
+
+The emergence of cheap computer RAM and RAM resident NoSQL data stores supporting micro-second
+look up across tens of millions of key-value pairs offers an excellent means to simulate
+intelligent recognition of user input in search and other interactions.
+
+QSearch loads a variety of uniquely identifiable items into a NoSQL memory-resident datastore
+(Redis) in Json notation and a simple web server (webpy) to respond to provide an API for
+lookups.
+
+
+QSearch Installation
+====================
+
+1. You will need to have Python installed. (Developed on Python 2.6.)
+2. You will need to download and install Redis from http://redis.io/. (Developed on version Redis 2.0.4).
+   It is best if you modified your PATH to include Redis.
+3. You will need to download and install webpy from http://webpy.org/. (Developed on version web.py 0.34)
+4. You will need to download or remotely use jquery-1.4.4.js
+5. You will need to have QSearch downloaded installed from https://github.com/FCC/QSearch.
+
+After you have installed everything, adjust the app/static/searchjsonp.html file to indicate how
+you are including the JQuery library.
+
+
+Running and Using QSearch
+=========================
+
+1. Launch Redis from command line:
+
+	$ cd /path/to/qsearch-0.1.3
+	$ redis-server config/redis.conf
+	
+2. Use the loader scripts from the utils/dataloaders folder to load data into Redis.
+   Each script has instructions of how to launch from command line:
+
+	$ cd /path/to/qsearch-0.1.3/utils/dataloader
+	$ python etl_csv_json.py -v -l "," -k 0 -p acronym -f ../../sampledata/acronyms.csv
+	$ python etl_callsign_json.py -v -l "|" -k 0 -p callsign -f ../../sampledata/tvq-tvstations.txt
+	
+	
+3. Launch qsearch_redis.py:
+	
+	$ cd /path/to/qsearch-0.1.3/apps/
+	$ python qsearch_redis.py 8080
+	
+	Launching as daemon:
+	nohup python redisweb.py 8080 > foo.out 2> foo.err < /dev/null &
+	
+
+4. Open http://yourhostname.com:8080/static/q_search.html
+
+	Example:
+	http://localhost:8080/static/q_search.html
+	
+	Try a search term, like "SSA"
+
+QSearch Features
+================
+
+• Code uses Jsonp and Jquery demonstrating that all interactions are controlled by Javascript and be added
+  to a page independently of what that page is being sued for.
+• Search is case insenstive.
+
+
+QSearch API
+===========
+
+http://localhost:8080/search/SSA/>json
+
+{"acronym": {"definition": "Shared Services Agreement", "name": "SSA", "id": "SSA"}}
+
+http://localhost:8080/search/SSA/>jsonp
+
+callback({"acronym": {"definition": "Shared Services Agreement", "name": "SSA", "id": "SSA"}, "html": "<div id=\"qsearch_result\">SSA: Shared Services Agreement</div>", "type": "acronym"})
+
+http://localhost:8080/search/json/SSA
+
+{"acronym": {"definition": "Shared Services Agreement", "name": "SSA", "id": "SSA"}}
+
+http://localhost:8080/search/jsonp/SSA
+
+callback({"acronym": {"definition": "Shared Services Agreement", "name": "SSA", "id": "SSA"}, "html": "<div id=\"qsearch_result\">SSA: Shared Services Agreement</div>", "type": "acronym"})
+
+http://localhost:8080/search/jsonp/SSA?callback=myFunction
+
+myFunction({"acronym": {"definition": "Shared Services Agreement", "name": "SSA", "id": "SSA"}, "html": "<div id=\"qsearch_result\">SSA: Shared Services Agreement</div>", "type": "acronym"})
+
+
+Alternative Ways of Using and Testing QSearch
+=============================================
+
+	A couple other screens from browser:
+	http://localhost:8080/lookup/wiat
+	http://localhost:8080/search/wiat
+	
+
+	command line:
+	$ curl http://localhost:8080/search/json/SSA 
+	$ curl http://localhost:8080/search/json/KOLO-TV
+
+
+	command line piped to -mjson.tool for formatted display :
+	$ curl http://localhost:8080/search/json/SSA | python -mjson.tool
+	$ curl http://localhost:8080/search/json/KOLO-TV | python -mjson.tool
+
+	command line with callback
+	
+	$ curl http://localhost:8080/search/jsonp/SSA 
+	$ curl http://localhost:8080/search/jsonp/SSA?callback=myFunction
+
+	python client to consumer qsearch_redis.py API
+	
+	$ python search_client.py 8081
+	$ curl http://localhost:8081/ssa
+	Or open browser and go to: 
+	http://localhost:8081/ssa
+	http://localhost:8081/wcau
+
+
+Redis Tips
+==========
+
+Launch redis command line (see http://redis.io/commands for all commands):
+
+	$ redis-cli
+	redis> 
+	redis> get acronym:SSA
+	"{\"definition\": \"Shared Services Agreement\", \"name\": \"SSA\", \"id\": \"SSA\"}"
+	redis>
+
+
+QSearch FAQ
+===========
+
+Q: How do I get my own data into Redis?
+A: Fork and modify an appropriate script from the utils/dataloaders/ subdirectory to create a python loader.
+   You can also write whatever scripts you need in whatever language you want to load data
+   into Redis. If you add new keys, you will probably need to adjust the qsearch_redis.py script
+   to search for the additional keys. 
+
+Q: How should I format my data to put into Redis?
+A: The Redis keys follow a pattern of "<class>:<id>", for example, "callsign:WIAT". The value
+   associated with a key is formatted to be in a json format. See the scripts in utils/dataloaders
+   to see how a delimited text file gets read, converted, and loaded into the Redis data store.
+
+Q: Do I have to use Redis? Can I use memcached or another key-value store?
+A: You can use another key-value store but you will need to change the code to do so. The code is simple
+and there is not much abstraction. 
