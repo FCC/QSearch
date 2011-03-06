@@ -1,0 +1,5 @@
+*.pyc
+logs/*
+dump.rdb
+dump.*
+app/static/jquery-1.4.4.js
