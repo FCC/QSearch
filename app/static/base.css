@@ -1,0 +1,78 @@
+/*
+Copyright (c) 2010, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.com/yui/license.html
+version: 3.2.0
+build: 2676
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+
+/* TB Class & Styles */
+body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12pt;
+	/* background: url("/static/bg2.png") repeat scroll 0 0 transparent;*/
+	margin: auto;
+/*	border:1px dotted black;*/
+}
+
+h1, h2 {
+	font-family: arial, sans-serif;
+	font-size: 42px;
+	/*letter-spacing: -0.5px;*/
+	text-align:left;	
+	color: rgb(31,73,125);
+	margin: 24px 0px 24px 0px;
+	border-bottom: 1px solid #444;
+}
+
+h2 {
+	font-size: 20px;
+}
+
+pre {
+	font-size: 14px;
+	text-align:left;
+	margin-left: 0px;
+}
+
+div#logo {
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 0px;
+	padding: 0px;
+}
+
+div#imprint {
+	position: absolute;
+	left: 0;
+	top: 65px;
+	margin: 0px;
+	padding: 0px;
+	background-color: #343434;
+	height: 16px;
+	width: 75px;
+	font-size: 13.5px;
+	color: white;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+div#content {
+	width: 80%;
+	margin: auto;
+}
+
+div#content dt, div.label {
+	font-weight: normal;
+	margin: 12px 2px 4px 0px;
+	font-size: 18px;
+	color: #888;
+}
+
+input {
+	width: 174px;
+	border: 1px solid gray;
+	padding:4px;
+}
