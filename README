@@ -24,6 +24,11 @@ JQuery  - an awesome and popular Javascript library - http://jquery.org/
 
 Knowledge of command line, Python, and server administration.
 
+QSearch was developed on a Mac Powerbook Air. The code and libraries should work
+well on Mac, Unix, or Linux machines. The core components should also exist for
+Windows machines, but it is left as exercise to the user user to make appropriate
+modifications.
+
 Software Licenses
 =================
 
@@ -192,3 +197,8 @@ A: The Redis keys follow a pattern of "<class>:<id>", for example, "callsign:WIA
 Q: Do I have to use Redis? Can I use memcached or another key-value store?
 A: You can use another key-value store but you will need to change the code to do so. The code is simple
 and there is not much abstraction. 
+
+Q: How do I use all this on a Microsoft Windows PC?
+A: You will need to find and install the Windows versions of the various tools and libraries and 
+   modify file paths and code appropriately. It would be great if someone wanted to port all this
+   to Windows and share with me the information.
