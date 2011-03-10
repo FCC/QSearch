@@ -1,4 +1,4 @@
-QSearch 0.1.3 README
+QSearch 0.1.4 README
 
 About QSearch
 =============
@@ -20,6 +20,7 @@ QSearch Requirements
 Python  - a programming language - http://www.python.org/
 Redis   - a memory resident key-value data store - http://redis.io/
 webpy   - a python web server library with some templating - http://webpy.org/
+redis-py - a python library for interacting with redis - http://github.com/andymccurdy/redis-py
 JQuery  - an awesome and popular Javascript library - http://jquery.org/
 
 Knowledge of command line, Python, and server administration.
@@ -34,6 +35,7 @@ Software Licenses
 
 Redis is available under the New BSD License - http://www.opensource.org/licenses/bsd-license.php
 webpy is in the public domain.
+redis-py is open source without restriction provided copyright notice and terms are included.
 QSearch code is in the public domain, initially authored by Greg Elin for the FCC.
 
 
@@ -78,27 +80,32 @@ Running and Using QSearch
 
 1. Launch Redis from command line:
 
-	$ cd /path/to/qsearch-0.1.3
+	$ cd /path/to/qsearch/
 	$ redis-server config/redis.conf
 	
 2. Use the loader scripts from the utils/dataloaders folder to load data into Redis.
    Each script has instructions of how to launch from command line:
 
-	$ cd /path/to/qsearch-0.1.3/utils/dataloader
+	$ cd /path/to/qsearch/utils/dataloaders
 	$ python etl_csv_json.py -v -l "," -k 0 -p acronym -f ../../sampledata/acronyms.csv
 	$ python etl_callsign_json.py -v -l "|" -k 0 -p callsign -f ../../sampledata/tvq-tvstations.txt
 	
 	
-3. Launch qsearch_redis.py:
+3. Adjust static/q_search.js script to call appropriate host. The q_host_port variable needs to be
+set to the correct host for jsonp call to work.
+
+	// Modify host to call for jsonp data
+	var q_host_port = "localhost:8080"
 	
-	$ cd /path/to/qsearch-0.1.3/apps/
+4. Launch qsearch_redis.py:
+	
+	$ cd /path/to/qsearch/app/
 	$ python qsearch_redis.py 8080
 	
-	Launching as daemon:
-	nohup python redisweb.py 8080 > foo.out 2> foo.err < /dev/null &
-	
+	Launching as daemon in the background (e.g., continue to run after terminal closed):
+	nohup python qsearch_redis.py 8080 > ../logs/log.txt 2>&1 & 
 
-4. Open http://yourhostname.com:8080/static/q_search.html
+5. Open http://yourhostname.com:8080/static/q_search.html
 
 	Example:
 	http://localhost:8080/static/q_search.html
@@ -202,3 +209,4 @@ Q: How do I use all this on a Microsoft Windows PC?
 A: You will need to find and install the Windows versions of the various tools and libraries and 
    modify file paths and code appropriately. It would be great if someone wanted to port all this
    to Windows and share with me the information.
+

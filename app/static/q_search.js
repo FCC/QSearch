@@ -9,10 +9,14 @@
 	 *  <form id="q_search"></form>
 	*/
 	
+	// Global settings
+	// Modify host to call for jsonp data
+	var q_host_port = "localhost:8080"
+	
 	 function updateResults() {
 		$("#q_result").html("");
 		q_term = $("#q_term").val();
-		q_url = "http://localhost:8080/search/jsonp/"+q_term+"?";
+		q_url = "http://"+q_host_port+"/search/jsonp/"+q_term+"?";
 		$.getJSON(q_url+"&callback=?",function(d) {
 			if (typeof d.html == "undefined") {
 				$("#q_result").html("");
